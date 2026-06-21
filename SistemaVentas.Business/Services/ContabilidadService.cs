@@ -11,7 +11,7 @@ namespace SistemaVentas.Business.Services
     {
         private readonly TransaccionRepository _repo;
         private static readonly HttpClient _httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(10) };
-        private static readonly string ApiUrl = "http://localhost:5062/api";
+        private static readonly string ApiUrl = "https://sistema-ventas-api-6x1w.onrender.com/api";
 
         public ContabilidadService()
         {

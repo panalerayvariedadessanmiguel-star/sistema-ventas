@@ -50,7 +50,7 @@ namespace SistemaVentas.Business.Services
     public class ProductSyncService
     {
         private readonly HttpClient _httpClient;
-        private static readonly string ApiUrl = "http://localhost:5062/api";
+        private static readonly string ApiUrl = "https://sistema-ventas-api-6x1w.onrender.com/api";
         private readonly ProductoRepository _productoRepo;
         private readonly CategoriaRepository _categoriaRepo;
         private readonly ProductoVarianteRepository _varianteRepo;

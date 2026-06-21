@@ -68,17 +68,17 @@ try {
     $productos = @()
     while ($reader.Read()) {
         $productos += @{
-            LocalId = $reader["Id"]
+            LocalId = [int]$reader["Id"]
             CodigoBarras = if ($reader["CodigoBarras"] -ne [DBNull]) { $reader["CodigoBarras"].ToString() } else { "" }
             Nombre = $reader["Nombre"].ToString()
             Descripcion = if ($reader["Descripcion"] -ne [DBNull]) { $reader["Descripcion"].ToString() } else { "" }
             CategoriaId = if ($reader["CategoriaId"] -ne [DBNull]) { [int]$reader["CategoriaId"] } else { 1 }
             NombreCategoria = if ($reader["NombreCategoria"] -ne [DBNull]) { $reader["NombreCategoria"].ToString() } else { "General" }
-            PrecioCompra = [decimal]$reader["PrecioCompra"]
-            PrecioVenta = [decimal]$reader["PrecioVenta"]
-            Stock = [int]$reader["Stock"]
-            StockMinimo = [int]$reader["StockMinimo"]
-            Activo = [bool]$reader["Activo"]
+            PrecioCompra = if ($reader["PrecioCompra"] -ne [DBNull]) { [decimal]$reader["PrecioCompra"] } else { 0 }
+            PrecioVenta = if ($reader["PrecioVenta"] -ne [DBNull]) { [decimal]$reader["PrecioVenta"] } else { 0 }
+            Stock = if ($reader["Stock"] -ne [DBNull]) { [int]$reader["Stock"] } else { 0 }
+            StockMinimo = if ($reader["StockMinimo"] -ne [DBNull]) { [int]$reader["StockMinimo"] } else { 5 }
+            Activo = if ($reader["Activo"] -ne [DBNull]) { [bool]$reader["Activo"] } else { $true }
             Variantes = @()
         }
     }
@@ -93,17 +93,17 @@ try {
     while ($reader.Read()) {
         $prodId = [int]$reader["ProductoId"]
         if (-not $variantes.ContainsKey($prodId)) { $variantes[$prodId] = @() }
-        $variantes[$prodId] += @{
-            Id = [int]$reader["Id"]
-            ProductoId = $prodId
-            Nombre = $reader["Nombre"].ToString()
-            ColorHex = $reader["ColorHex"].ToString()
-            Talla = if ($reader["Talla"] -ne [DBNull]) { $reader["Talla"].ToString() } else { "" }
-            Stock = if ($reader["Stock"] -ne [DBNull]) { [int]$reader["Stock"] } else { $null }
-            ImagenUrl = ""
-            Activo = [bool]$reader["Activo"]
-            Orden = [int]$reader["Orden"]
-        }
+    $variantes[$prodId] += @{
+        Id = [int]$reader["Id"]
+        ProductoId = $prodId
+        Nombre = $reader["Nombre"].ToString()
+        ColorHex = if ($reader["ColorHex"] -ne [DBNull]) { $reader["ColorHex"].ToString() } else { "#000000" }
+        Talla = if ($reader["Talla"] -ne [DBNull]) { $reader["Talla"].ToString() } else { "" }
+        Stock = if ($reader["Stock"] -ne [DBNull]) { [int]$reader["Stock"] } else { $null }
+        ImagenUrl = ""
+        Activo = if ($reader["Activo"] -ne [DBNull]) { [bool]$reader["Activo"] } else { $true }
+        Orden = if ($reader["Orden"] -ne [DBNull]) { [int]$reader["Orden"] } else { 0 }
+    }
     }
     $reader.Close()
     $totalVariantes = ($variantes.Values | ForEach-Object { $_.Count }) | Measure-Object -Sum | Select-Object -ExpandProperty Sum

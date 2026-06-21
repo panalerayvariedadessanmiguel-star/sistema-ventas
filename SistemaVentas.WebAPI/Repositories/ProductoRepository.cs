@@ -72,7 +72,7 @@ public class ProductoRepository
     {
         using var conn = _db.GetConnection();
         var sql = @"INSERT INTO Productos (CodigoBarras, Nombre, Descripcion, CategoriaId, PrecioCompra, PrecioVenta, Stock, StockMinimo, ImagenUrl, Orden, FechaCreacion, FechaModificacion, Activo)
-                    VALUES (@CodigoBarras, @Nombre, @Descripcion, @CategoriaId, @PrecioCompra, @PrecioVenta, @Stock, @StockMinimo, @ImagenUrl, @Orden, NOW(), NOW(), 1)
+                    VALUES (@CodigoBarras, @Nombre, @Descripcion, @CategoriaId, @PrecioCompra, @PrecioVenta, @Stock, @StockMinimo, @ImagenUrl, @Orden, NOW(), NOW(), TRUE)
                     RETURNING Id";
         return await conn.ExecuteScalarAsync<int>(sql, new { producto.CodigoBarras, producto.Nombre, producto.Descripcion, producto.CategoriaId, producto.PrecioCompra, producto.PrecioVenta, producto.Stock, producto.StockMinimo, producto.ImagenUrl, producto.Orden });
     }

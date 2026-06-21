@@ -16,7 +16,7 @@ public class CategoriaRepository
     public async Task<List<Categoria>> GetAllAsync(bool includeInactive = false)
     {
         using var conn = _db.GetConnection();
-        var where = includeInactive ? "1 = 1" : "Activo = 1";
+        var where = includeInactive ? "1 = 1" : "Activo = TRUE";
         return (await conn.QueryAsync<Categoria>(
             $"SELECT * FROM Categorias WHERE {where} ORDER BY Nombre")).AsList();
     }

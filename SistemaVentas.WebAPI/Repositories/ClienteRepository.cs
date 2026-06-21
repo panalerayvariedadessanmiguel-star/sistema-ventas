@@ -17,7 +17,7 @@ public class ClienteRepository
     {
         using var conn = _db.GetConnection();
         return (await conn.QueryAsync<Cliente>(
-            "SELECT * FROM Clientes WHERE Activo = 1 ORDER BY Nombre")).AsList();
+            "SELECT * FROM Clientes WHERE Activo = TRUE ORDER BY Nombre")).AsList();
     }
 
     public async Task<Cliente?> GetByIdAsync(int id)
@@ -48,7 +48,7 @@ public class ClienteRepository
     {
         using var conn = _db.GetConnection();
         return await conn.QueryFirstOrDefaultAsync<Cliente>(
-            "SELECT * FROM Clientes WHERE Documento = @Documento AND Contrasena = @Contrasena AND Activo = 1",
+            "SELECT * FROM Clientes WHERE Documento = @Documento AND Contrasena = @Contrasena AND Activo = TRUE",
             new { Documento = documento, Contrasena = contrasena });
     }
 
@@ -56,7 +56,7 @@ public class ClienteRepository
     {
         using var conn = _db.GetConnection();
         var rows = await conn.ExecuteAsync(
-            "UPDATE Clientes SET Contrasena = @Contrasena WHERE Id = @Id AND Activo = 1",
+            "UPDATE Clientes SET Contrasena = @Contrasena WHERE Id = @Id AND Activo = TRUE",
             new { Id = id, Contrasena = nuevaContrasena });
         return rows > 0;
     }

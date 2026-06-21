@@ -17,14 +17,14 @@ public class ProductoVarianteRepository
     {
         using var conn = _db.GetConnection();
         return (await conn.QueryAsync<ProductoVariante>(
-            "SELECT * FROM ProductoVariantes WHERE Activo = 1 ORDER BY ProductoId, Orden")).AsList();
+            "SELECT * FROM ProductoVariantes WHERE Activo = TRUE ORDER BY ProductoId, Orden")).AsList();
     }
 
     public async Task<List<ProductoVariante>> GetByProductoAsync(int productoId)
     {
         using var conn = _db.GetConnection();
         return (await conn.QueryAsync<ProductoVariante>(
-            "SELECT * FROM ProductoVariantes WHERE ProductoId = @ProductoId AND Activo = 1 ORDER BY Orden",
+            "SELECT * FROM ProductoVariantes WHERE ProductoId = @ProductoId AND Activo = TRUE ORDER BY Orden",
             new { ProductoId = productoId })).AsList();
     }
 
@@ -68,7 +68,7 @@ public class ProductoVarianteRepository
     {
         using var conn = _db.GetConnection();
         var rows = await conn.ExecuteAsync(
-            "UPDATE ProductoVariantes SET Activo = 0 WHERE Id = @Id", new { Id = id });
+            "UPDATE ProductoVariantes SET Activo = FALSE WHERE Id = @Id", new { Id = id });
         return rows > 0;
     }
 }

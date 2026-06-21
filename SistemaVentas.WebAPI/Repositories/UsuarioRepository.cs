@@ -17,7 +17,7 @@ public class UsuarioRepository
     {
         using var conn = _db.GetConnection();
         return await conn.QueryFirstOrDefaultAsync<Usuario>(
-            "SELECT * FROM Usuarios WHERE Documento = @Documento AND Contraseña = @Contrasena AND Activo = 1",
+            "SELECT * FROM Usuarios WHERE Documento = @Documento AND Contraseña = @Contrasena AND Activo = TRUE",
             new { Documento = documento, Contrasena = contrasena });
     }
 

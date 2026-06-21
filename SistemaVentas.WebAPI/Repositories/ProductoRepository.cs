@@ -19,7 +19,7 @@ public class ProductoRepository
         var sql = @"SELECT p.*, c.Nombre AS NombreCategoria 
                     FROM Productos p 
                     LEFT JOIN Categorias c ON p.CategoriaId = c.Id 
-                    WHERE p.Activo = 1 
+                    WHERE p.Activo = TRUE 
                     ORDER BY p.Orden ASC, p.Nombre";
         return (await conn.QueryAsync<Producto>(sql)).AsList();
     }
@@ -51,7 +51,7 @@ public class ProductoRepository
         var sql = @"SELECT p.*, c.Nombre AS NombreCategoria 
                     FROM Productos p 
                     LEFT JOIN Categorias c ON p.CategoriaId = c.Id 
-                    WHERE p.Activo = 1 AND p.CategoriaId = @CategoriaId 
+                    WHERE p.Activo = TRUE AND p.CategoriaId = @CategoriaId 
                     ORDER BY p.Orden ASC, p.Nombre";
         return (await conn.QueryAsync<Producto>(sql, new { CategoriaId = categoriaId })).AsList();
     }
@@ -62,7 +62,7 @@ public class ProductoRepository
         var sql = @"SELECT p.*, c.Nombre AS NombreCategoria 
                     FROM Productos p 
                     LEFT JOIN Categorias c ON p.CategoriaId = c.Id 
-                    WHERE p.Activo = 1 AND (p.Nombre ILIKE @Term OR p.Descripcion ILIKE @Term)
+                    WHERE p.Activo = TRUE AND (p.Nombre ILIKE @Term OR p.Descripcion ILIKE @Term)
                     ORDER BY p.Nombre
                     LIMIT 20";
         return (await conn.QueryAsync<Producto>(sql, new { Term = $"%{term}%" })).AsList();
@@ -92,7 +92,7 @@ public class ProductoRepository
     public async Task<bool> DeleteAsync(int id)
     {
         using var conn = _db.GetConnection();
-        var sql = "UPDATE Productos SET Activo = 0, FechaModificacion = NOW() WHERE Id = @Id";
+        var sql = "UPDATE Productos SET Activo = FALSE, FechaModificacion = NOW() WHERE Id = @Id";
         var rows = await conn.ExecuteAsync(sql, new { Id = id });
         return rows > 0;
     }
@@ -121,7 +121,7 @@ public class ProductoRepository
         var sql = @"SELECT p.*, c.Nombre AS NombreCategoria 
                     FROM Productos p 
                     LEFT JOIN Categorias c ON p.CategoriaId = c.Id 
-                    WHERE LOWER(p.Nombre) = LOWER(@Nombre) AND p.Activo = 1
+                    WHERE LOWER(p.Nombre) = LOWER(@Nombre) AND p.Activo = TRUE
                     LIMIT 1";
         return await conn.QueryFirstOrDefaultAsync<Producto>(sql, new { Nombre = nombre });
     }
@@ -133,7 +133,7 @@ public class ProductoRepository
         var previewSql = @"SELECT Nombre, COUNT(*) AS Cnt, MIN(Id) AS KeepId
                            FROM Productos
                            WHERE (CodigoBarras IS NULL OR CodigoBarras = '')
-                             AND Activo = 1
+                             AND Activo = TRUE
                            GROUP BY Nombre
                            HAVING COUNT(*) > 1
                            ORDER BY Nombre";
@@ -146,7 +146,7 @@ public class ProductoRepository
                               SELECT MIN(Id) AS KeepId, Nombre
                               FROM Productos
                               WHERE (CodigoBarras IS NULL OR CodigoBarras = '')
-                                AND Activo = 1
+                                AND Activo = TRUE
                               GROUP BY Nombre
                               HAVING COUNT(*) > 1
                           ) d
@@ -161,7 +161,7 @@ public class ProductoRepository
     public async Task<int> DeleteByNombreAsync(string nombre)
     {
         using var conn = _db.GetConnection();
-        var sql = "UPDATE Productos SET Activo = 0 WHERE LOWER(Nombre) = LOWER(@Nombre) AND Activo = 1";
+        var sql = "UPDATE Productos SET Activo = FALSE WHERE LOWER(Nombre) = LOWER(@Nombre) AND Activo = TRUE";
         return await conn.ExecuteAsync(sql, new { Nombre = nombre });
     }
 }

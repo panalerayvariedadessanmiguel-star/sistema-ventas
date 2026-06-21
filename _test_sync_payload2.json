@@ -1,0 +1,1 @@
+[{"localId":2001,"codigoBarras":"TESTBARCODE001","nombre":"ProductoConCodigo","descripcion":"Test con codigo de barras","categoriaId":1,"nombreCategoria":"General","precioCompra":3000,"precioVenta":8000,"stock":5,"stockMinimo":1,"imagenUrl":"","orden":0,"activo":true}]

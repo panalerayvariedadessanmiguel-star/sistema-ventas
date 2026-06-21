@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="SistemaVentas.Business/SistemaVentas.Business.csproj" />
+  <Project Path="SistemaVentas.Data/SistemaVentas.Data.csproj" />
+  <Project Path="SistemaVentas.Presentation/SistemaVentas.Presentation.csproj" />
+  <Project Path="SistemaVentas.WebAPI/SistemaVentas.WebAPI.csproj" />
+</Solution>

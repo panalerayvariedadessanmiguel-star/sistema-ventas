@@ -1,0 +1,39 @@
+using System.Collections.Generic;
+using System.Data;
+using Dapper;
+using SistemaVentas.Data.Models;
+
+namespace SistemaVentas.Data.Repositories"
+{
+    public class ConfiguracionRepository"
+    {
+        public Configuracion GetByClave(string clave)
+        {
+            using var connection = DbConnection.GetConnection();
+            var sql = "SELECT * FROM Configuracion WHERE Clave = @Clave";
+            return connection.QueryFirstOrDefault<Configuracion>(sql, new { Clave = clave });
+        }
+
+        public List<Configuracion> GetAll()
+        {
+            using var connection = DbConnection.GetConnection();
+            var sql = "SELECT * FROM Configuracion ORDER BY Clave";
+            return connection.Query<Configuracion>(sql).AsList();
+        }
+
+        public void Insert(Configuracion config)
+        {
+            using var connection = DbConnection.GetConnection();
+            var sql = @"INSERT INTO Configuracion (Clave, Valor, Descripcion) 
+                        VALUES (@Clave, @Valor, @Descripcion)";
+            connection.Execute(sql, config);
+        }
+
+        public void UpdateValor(string clave, string valor)
+        {
+            using var connection = DbConnection.GetConnection();
+            var sql = "UPDATE Configuracion SET Valor = @Valor WHERE Clave = @Clave";
+            connection.Execute(sql, new { Clave = clave, Valor = valor });
+        }
+    }
+}

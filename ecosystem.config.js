@@ -1,0 +1,51 @@
+module.exports = {
+  apps: [
+    {
+      name: 'tienda-web',
+      cwd: 'C:\\SistemaVentas\\tienda-web',
+      script: 'node_modules\\next\\dist\\bin\\next',
+      args: 'start -p 3000',
+      interpreter: 'node',
+      env: {
+        NODE_ENV: 'production',
+        PORT: 3000,
+      },
+      max_restarts: 10,
+      restart_delay: 3000,
+      error_file: 'C:\\SistemaVentas\\logs\\web-error.log',
+      out_file: 'C:\\SistemaVentas\\logs\\web-out.log',
+      merge_logs: true,
+      time: true,
+    },
+    {
+      name: 'api-ventas',
+      cwd: 'C:\\SistemaVentas\\api-publish-v2',
+      script: 'SistemaVentas.WebAPI.exe',
+      interpreter: 'none',
+      env: {
+        ASPNETCORE_URLS: 'http://localhost:5063',
+      },
+      max_restarts: 10,
+      restart_delay: 5000,
+      error_file: 'C:\\SistemaVentas\\logs\\api-error.log',
+      out_file: 'C:\\SistemaVentas\\logs\\api-out.log',
+      merge_logs: true,
+      time: true,
+    },
+    {
+      name: 'whatsapp-service',
+      cwd: 'C:\\SistemaVentas\\whatsapp-service',
+      script: 'server.js',
+      interpreter: 'node',
+      env: {
+        PORT: 3007,
+      },
+      max_restarts: 10,
+      restart_delay: 5000,
+      error_file: 'C:\\SistemaVentas\\logs\\wpp-error.log',
+      out_file: 'C:\\SistemaVentas\\logs\\wpp-out.log',
+      merge_logs: true,
+      time: true,
+    },
+  ],
+};

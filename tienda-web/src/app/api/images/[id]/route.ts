@@ -16,7 +16,7 @@ export async function GET(
 
   try {
     const result = await pool.query(
-      'SELECT data, mimetype, filename FROM imagenes WHERE productoid = $1 ORDER BY id LIMIT 1',
+      'SELECT data, mimetype, filename FROM imagenes WHERE id = $1',
       [productId]
     );
 

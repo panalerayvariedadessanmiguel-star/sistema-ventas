@@ -88,7 +88,7 @@ foreach ($p in $products) {
                 precioVenta = $cloud.precioVenta
                 stock = $cloud.stock
                 stockMinimo = $cloud.stockMinimo
-                imagenUrl = "$api$url"
+                imagenUrl = $cloud.imagenUrl
                 orden = $cloud.orden
                 activo = $cloud.activo
             } | ConvertTo-Json

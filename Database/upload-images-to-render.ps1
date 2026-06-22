@@ -71,7 +71,7 @@ foreach ($p in $products) {
         $content.Headers.Remove("Content-Type")
         $content.Headers.TryAddWithoutValidation("Content-Type", "multipart/form-data; boundary=$boundary")
 
-        $resp2 = $client.PostAsync("$api/storage/upload", $content).GetAwaiter().GetResult()
+        $resp2 = $client.PostAsync("$api/storage/upload?productoId=$($cloud.id)", $content).GetAwaiter().GetResult()
         $body = $resp2.Content.ReadAsStringAsync().GetAwaiter().GetResult()
 
         if ($resp2.IsSuccessStatusCode) {

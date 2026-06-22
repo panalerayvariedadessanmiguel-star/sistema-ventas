@@ -39,7 +39,7 @@ public class LocalStorageService
         return $"{_baseUrl}/{Uri.EscapeDataString(safeName)}";
     }
 
-    private static string SanitizeFileName(string fileName)
+    public static string SanitizeFileName(string fileName)
     {
         var invalidos = Path.GetInvalidFileNameChars();
         var sanitized = string.Join("_", fileName.Split(invalidos, StringSplitOptions.RemoveEmptyEntries));

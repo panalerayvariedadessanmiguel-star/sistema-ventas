@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import type { Producto, Variante } from '@/lib/api';
 import { api } from '@/lib/api';
 import { useCarrito } from '@/lib/carrito-context';
@@ -49,13 +49,13 @@ export default function ProductCard({ producto }: Props) {
     variantes.some(v => v.talla && v.talla.trim() !== ''),
   [variantes]);
 
-  useEffect(() => {
+  const cargarVariantes = useCallback(() => {
     if (variantes.length > 0 || loadingV) return;
     setLoadingV(true);
     api.productos.variantes.getByProducto(producto.id)
       .then(v => {
         setVariantes(v);
-        if (v.length > 0 && showModal) {
+        if (v.length > 0) {
           if (v.every(x => x.nombre === 'Única' && x.colorHex === '#9E9E9E')) {
             setVarianteSel(v[0]);
           } else {
@@ -66,19 +66,7 @@ export default function ProductCard({ producto }: Props) {
       })
       .catch(() => {})
       .finally(() => setLoadingV(false));
-  }, [producto.id]);
-
-  useEffect(() => {
-    if (!showModal) return;
-    if (variantes.length > 0 && !varianteSel) {
-      if (esSoloTalla) {
-        setVarianteSel(variantes[0]);
-      } else if (grupos.length > 0) {
-        setColorSel(grupos[0]);
-        setVarianteSel(grupos[0].tallas[0] || null);
-      }
-    }
-  }, [showModal, variantes, varianteSel, grupos, esSoloTalla]);
+  }, [producto.id, variantes.length, loadingV]);
 
   const stockActual = varianteSel?.stock ?? producto.stock;
   const imagenMostrar = producto.imagenUrl || variantes.find(v => v.imagenUrl)?.imagenUrl || '';
@@ -171,7 +159,7 @@ export default function ProductCard({ producto }: Props) {
             </span>
           </div>
           <button
-            onClick={() => setShowModal(true)}
+            onClick={() => { setShowModal(true); cargarVariantes(); }}
             disabled={producto.stock <= 0}
             className="mt-3 w-full bg-gray-900 text-white py-2.5 px-4 rounded-lg text-sm font-medium hover:bg-gray-800 disabled:bg-gray-100 disabled:text-gray-300 disabled:cursor-not-allowed transition-all duration-200 active:scale-[0.97] hover:shadow-lg hover:shadow-gray-900/20"
           >

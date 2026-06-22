@@ -1,5 +1,7 @@
 import { neon } from '@neondatabase/serverless';
 
+const DATABASE_URL = 'postgresql://neondb_owner:npg_TJ4QN1xmzeFp@ep-ancient-credit-aicwplyb-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require';
+
 export const runtime = 'edge';
 
 export async function GET(
@@ -12,7 +14,7 @@ export async function GET(
     return new Response('Invalid product ID', { status: 400 });
   }
 
-  const sql = neon(process.env.DATABASE_URL!);
+  const sql = neon(DATABASE_URL);
   const rows = await sql(
     'SELECT data, mimetype, filename FROM imagenes WHERE productoid = $1 ORDER BY id LIMIT 1',
     [productId]
